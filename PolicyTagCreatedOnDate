@@ -1,0 +1,23 @@
+{
+  "mode": "All",
+  "policyRule": {
+    "if": {
+      "allOf": [
+        {
+          "field": "tags['CreatedOnDate']",
+          "exists": "false"
+        }
+      ]
+    },
+    "then": {
+      "effect": "append",
+      "details": [
+        {
+          "field": "tags['CreatedOnDate']",
+          "value": "[utcNow()]"
+        }
+      ]
+    }
+  },
+  "parameters": {}
+}
