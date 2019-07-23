@@ -31,7 +31,7 @@
 
 
 $TagName = "CreatedOnDate"
-$GlobalAdminAccount = "AzReadOnlyAccount@domain.co.uk"
+$AzROAccount = "AzReadOnlyAccount@domain.co.uk"
 $GetAdditionalLogBased = $false
 $CultureGB = New-Object System.Globalization.CultureInfo("en-GB")
 
@@ -97,10 +97,10 @@ Function Email-SendGrid {
 
 # Get Read Only account for secure vault
 try{
-    $Creds = Get-AutomationPSCredential -Name $ROAccount
-    Write-output -inputobject "Got account creds for: [$ROAccount]"
+    $Creds = Get-AutomationPSCredential -Name $AzROAccount
+    Write-output -inputobject "Got account creds for: [$AzROAccount]"
 } Catch {
-    write-error -Message "Could not get creds for account: [$ROAccount] $_"
+    write-error -Message "Could not get creds for account: [$AzROAccount] $_"
     return
 }
 
