@@ -19,7 +19,7 @@ Param(
 )
 
 # Global variables
-$SendGridAdminAccount = "SendGridAlertsProd1"
+$SendGridAdminAccount = "SendGridAlertsProd"
 
 # Get secure admin creds from the AA creds vault
 try{
