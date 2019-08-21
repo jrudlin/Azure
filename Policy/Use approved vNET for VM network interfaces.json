@@ -1,0 +1,57 @@
+{
+  "mode": "Indexed",
+  "policyRule": {
+    "if": {
+      "allOf": [
+        {
+          "field": "type",
+          "equals": "Microsoft.Network/networkInterfaces"
+        },
+        {
+          "not": {
+            "field": "Microsoft.Network/networkInterfaces/ipconfigurations[*].subnet.id",
+            "like": "[concat(parameters('vNetId1'),'*')]"
+          }
+        },
+        {
+          "not": {
+            "field": "Microsoft.Network/networkInterfaces/ipconfigurations[*].subnet.id",
+            "like": "[concat(parameters('vNetId2'),'*')]"
+          }
+        },
+        {
+          "not": {
+            "field": "Microsoft.Network/networkInterfaces/ipconfigurations[*].subnet.id",
+            "like": "[concat(parameters('vNetId3'),'*')]"
+          }
+        }
+      ]
+    },
+    "then": {
+      "effect": "deny"
+    }
+  },
+  "parameters": {
+    "vNetId1": {
+      "type": "String",
+      "metadata": {
+        "displayName": "vNet Id 1",
+        "description": "Resource Id for the vNet"
+      }
+    },
+	"vNetId2": {
+      "type": "String",
+      "metadata": {
+        "displayName": "vNet Id 2",
+        "description": "Resource Id for the vNet"
+      }
+    },
+	"vNetId3": {
+      "type": "String",
+      "metadata": {
+        "displayName": "vNet Id 3",
+        "description": "Resource Id for the vNet"
+      }
+    }
+  }
+}

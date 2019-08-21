@@ -1,0 +1,34 @@
+{
+  "mode": "All",
+  "policyRule": {
+    "if": {
+      "allof": [
+        {
+          "field": "type",
+          "equals": "Microsoft.Resources/subscriptions/resourceGroups"
+        },
+        {
+          "not": {
+            "anyof": [
+              {
+                "field": "name",
+                "like": "[parameters('namePattern')]"
+              }
+            ]
+         }
+        }
+      ]
+    },
+    "then": {
+      "effect": "deny"
+    }
+  },
+  "parameters": {
+    "namePattern": {
+      "type": "String",
+      "metadata": {
+        "description": "Pattern to use for Resource Group names. Can include wildcard (*)."
+      }
+    }
+  }
+}

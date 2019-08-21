@@ -1,0 +1,29 @@
+{
+  "properties": {
+    "displayName": "Tag - CreatedOn Date",
+    "policyType": "Custom",
+    "mode": "All",
+    "metadata": {
+      "category": "General",
+      "createdBy": "334cb0ef-435f-4601-8c7b-b2deca6ec850",
+      "createdOn": "2019-05-27T19:26:32.1802262Z",
+      "updatedBy": null,
+      "updatedOn": null
+    },
+    "parameters": {},
+    "policyRule": {
+      "if": {
+        "not": {
+          "field": "tags.date",
+          "match": "##-???-####"
+        }
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  },
+  "id": "/providers/Microsoft.Management/managementGroups/NH-Az-Management-Group/providers/Microsoft.Authorization/policyDefinitions/102fb697-a5bb-467f-a6c1-db19832d9989",
+  "type": "Microsoft.Authorization/policyDefinitions",
+  "name": "102fb697-a5bb-467f-a6c1-db19832d9989"
+}

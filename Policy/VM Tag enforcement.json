@@ -1,0 +1,34 @@
+{
+  "mode": "Indexed",
+  "policyRule": {
+    "if": {
+      "allof": [
+        {
+          "field": "type",
+          "equals": "Microsoft.Computer/virtualMachines"
+        },
+        {
+          "not": {
+            "anyof": [
+              {
+                "field": "name",
+                "like": "[parameters('namePattern')]"
+              }
+            ]
+         }
+        }
+      ]
+    },
+    "then": {
+      "effect": "deny"
+    }
+  },
+  "parameters": {
+    "namePattern": {
+      "type": "String",
+      "metadata": {
+        "description": "Pattern to use for VM names. Can include wildcard (*)."
+      }
+    }
+  }
+}
