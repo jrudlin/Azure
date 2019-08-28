@@ -1,4 +1,4 @@
-﻿# Variables
+# Variables
 $DiskID = ""# eg. "/subscriptions/203bdbf0-69bd-1a12-a894-a826cf0a34c8/resourcegroups/rg-server1-prod-1/providers/Microsoft.Compute/disks/Server1-Server1"
 $VMName = "VM-Server1"
 $DiskSizeGB = 32
@@ -31,7 +31,7 @@ $SAS = Grant-AzDiskAccess -ResourceGroupName $resourceGroupName -DiskName $DiskN
 #$sasExpiryDuration = "3600"
 
 #Provide storage account name where you want to copy the snapshot - the script will create a new one temporarily
-$storageAccountName = "satempconvertmanageddisk"
+$storageAccountName = "sashrinkddisk" + ($($VMName -replace '[^a-zA-Z0-9]', '')).ToLower()
 
 #Name of the storage container where the downloaded snapshot will be stored
 $storageContainerName = $storageAccountName
