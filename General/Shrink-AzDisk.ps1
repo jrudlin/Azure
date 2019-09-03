@@ -51,7 +51,7 @@ $destinationContext = $StorageAccount.Context
 $container = New-AzStorageContainer -Name $storageContainerName -Permission Off -Context $destinationContext
 
 #Copy the snapshot to the storage account and wait for it to complete
-Start-AzStorageBlobCopy -AbsoluteUri $SAS -DestContainer $storageContainerName -DestBlob $destinationVHDFileName -DestContext $destinationContext
+Start-AzStorageBlobCopy -AbsoluteUri $SAS.AccessSAS -DestContainer $storageContainerName -DestBlob $destinationVHDFileName -DestContext $destinationContext
 while(($state = Get-AzStorageBlobCopyState -Context $destinationContext -Blob $destinationVHDFileName -Container $storageContainerName).Status -ne "Success") { $state; Start-Sleep -Seconds 20 }
 $state
 
