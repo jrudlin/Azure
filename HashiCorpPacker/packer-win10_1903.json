@@ -60,7 +60,7 @@
 
           "Invoke-Expression ((New-Object -TypeName net.webclient).DownloadString('https://chocolatey.org/install.ps1'))",
           "& choco feature enable -n allowGlobalConfirmation",
-          "Write-Host \"Chocolatey Installed.\"",
+          "Write-Host \"Chocolatey Installed.\""
       ]
     },
     {
