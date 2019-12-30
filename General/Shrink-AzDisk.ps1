@@ -132,7 +132,7 @@ $accountType = "Premium_LRS"
 $vhdUri = $osdisk.ICloudBlob.Uri.AbsoluteUri
 
 # Specify the disk options
-$diskConfig = New-AzDiskConfig -AccountType $accountType -Location $VM.location -DiskSizeGB $DiskSizeGB -SourceUri $vhdUri -CreateOption Import
+$diskConfig = New-AzDiskConfig -AccountType $accountType -Location $VM.location -DiskSizeGB $DiskSizeGB -SourceUri $vhdUri -CreateOption Import -StorageAccountId $StorageAccount.Id
 
 #Create Managed disk
 $NewManagedDisk = New-AzDisk -DiskName $NewDiskName -Disk $diskConfig -ResourceGroupName $resourceGroupName
