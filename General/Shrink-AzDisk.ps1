@@ -67,7 +67,8 @@ $emptydiskforfootername = "$($VM.StorageProfile.OsDisk.Name)-empty.vhd"
 $diskConfig = New-AzDiskConfig `
     -Location $VM.Location `
     -CreateOption Empty `
-    -DiskSizeGB $DiskSizeGB
+    -DiskSizeGB $DiskSizeGB `
+    -HyperVGeneration $Disk.HyperVGeneration
 
 $dataDisk = New-AzDisk `
     -ResourceGroupName $resourceGroupName `
@@ -132,7 +133,7 @@ $accountType = "Premium_LRS"
 $vhdUri = $osdisk.ICloudBlob.Uri.AbsoluteUri
 
 # Specify the disk options
-$diskConfig = New-AzDiskConfig -AccountType $accountType -Location $VM.location -DiskSizeGB $DiskSizeGB -SourceUri $vhdUri -CreateOption Import -StorageAccountId $StorageAccount.Id
+$diskConfig = New-AzDiskConfig -AccountType $accountType -Location $VM.location -DiskSizeGB $DiskSizeGB -SourceUri $vhdUri -CreateOption Import -StorageAccountId $StorageAccount.Id -HyperVGeneration $Disk.HyperVGeneration
 
 #Create Managed disk
 $NewManagedDisk = New-AzDisk -DiskName $NewDiskName -Disk $diskConfig -ResourceGroupName $resourceGroupName
