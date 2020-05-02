@@ -17,8 +17,13 @@ $VM = Get-AzVm | ? Name -eq $VMName
 #Provide the name of your resource group where snapshot is created
 $resourceGroupName = $VM.ResourceGroupName
 
-# Get Disk Name from ID
+# Get Disk from ID
 $Disk = Get-AzDisk | ? Id -eq $DiskID
+
+# Get VM/Disk generation from Disk
+$HyperVGen = $Disk.HyperVGeneration
+
+# Get Disk Name from Disk
 $DiskName = $Disk.Name
 
 # Get SAS URI for the Managed disk
@@ -67,7 +72,8 @@ $emptydiskforfootername = "$($VM.StorageProfile.OsDisk.Name)-empty.vhd"
 $diskConfig = New-AzDiskConfig `
     -Location $VM.Location `
     -CreateOption Empty `
-    -DiskSizeGB $DiskSizeGB
+    -DiskSizeGB $DiskSizeGB `
+    -HyperVGeneration $HyperVGen
 
 $dataDisk = New-AzDisk `
     -ResourceGroupName $resourceGroupName `
@@ -132,7 +138,7 @@ $accountType = "Premium_LRS"
 $vhdUri = $osdisk.ICloudBlob.Uri.AbsoluteUri
 
 # Specify the disk options
-$diskConfig = New-AzDiskConfig -AccountType $accountType -Location $VM.location -DiskSizeGB $DiskSizeGB -SourceUri $vhdUri -CreateOption Import -StorageAccountId $StorageAccount.Id
+$diskConfig = New-AzDiskConfig -AccountType $accountType -Location $VM.location -DiskSizeGB $DiskSizeGB -SourceUri $vhdUri -CreateOption Import -StorageAccountId $StorageAccount.Id -HyperVGeneration $HyperVGen
 
 #Create Managed disk
 $NewManagedDisk = New-AzDisk -DiskName $NewDiskName -Disk $diskConfig -ResourceGroupName $resourceGroupName
