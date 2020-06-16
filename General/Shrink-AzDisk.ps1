@@ -17,8 +17,13 @@ $VM = Get-AzVm | ? Name -eq $VMName
 #Provide the name of your resource group where snapshot is created
 $resourceGroupName = $VM.ResourceGroupName
 
-# Get Disk Name from ID
+# Get Disk from ID
 $Disk = Get-AzDisk | ? Id -eq $DiskID
+
+# Get VM/Disk generation from Disk
+$HyperVGen = $Disk.HyperVGeneration
+
+# Get Disk Name from Disk
 $DiskName = $Disk.Name
 
 # Get SAS URI for the Managed disk
