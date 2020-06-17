@@ -36,7 +36,7 @@ $SAS = Grant-AzDiskAccess -ResourceGroupName $resourceGroupName -DiskName $DiskN
 #$sasExpiryDuration = "3600"
 
 #Provide storage account name where you want to copy the snapshot - the script will create a new one temporarily
-$storageAccountName = "sashrinkddisk" + ($($VMName -replace '[^a-zA-Z0-9]', '')).ToLower()
+$storageAccountName = "shrink" + [system.guid]::NewGuid().tostring().replace('-','').substring(1,18)
 
 #Name of the storage container where the downloaded snapshot will be stored
 $storageContainerName = $storageAccountName
@@ -131,8 +131,8 @@ $emptyDiskblob | Remove-AzStorageBlob -Force
 #Provide the name of the Managed Disk
 $NewDiskName = "$DiskName" + "-new"
 
-#Provide the storage type for the Managed Disk. PremiumLRS or StandardLRS.
-$accountType = "Premium_LRS"
+#Create the new disk with the same SKU as the current one
+$accountType = $Disk.Sku.Name
 
 # Get the new disk URI
 $vhdUri = $osdisk.ICloudBlob.Uri.AbsoluteUri
