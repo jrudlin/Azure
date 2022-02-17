@@ -29,26 +29,14 @@ $DiskName = $Disk.Name
 # Get SAS URI for the Managed disk
 $SAS = Grant-AzDiskAccess -ResourceGroupName $resourceGroupName -DiskName $DiskName -Access 'Read' -DurationInSecond 600000;
 
-#Provide the managed disk name
-#$managedDiskName = "yourManagedDiskName" 
-
-#Provide Shared Access Signature (SAS) expiry duration in seconds e.g. 3600.
-#$sasExpiryDuration = "3600"
-
 #Provide storage account name where you want to copy the snapshot - the script will create a new one temporarily
 $storageAccountName = "shrink" + [system.guid]::NewGuid().tostring().replace('-','').substring(1,18)
 
 #Name of the storage container where the downloaded snapshot will be stored
 $storageContainerName = $storageAccountName
 
-#Provide the key of the storage account where you want to copy snapshot. 
-#$storageAccountKey = "yourStorageAccountKey"
-
 #Provide the name of the VHD file to which snapshot will be copied.
 $destinationVHDFileName = "$($VM.StorageProfile.OsDisk.Name).vhd"
-
-#Generate the SAS for the managed disk
-#$sas = Grant-AzureRmDiskAccess -ResourceGroupName $resourceGroupName -DiskName $managedDiskName -Access Read -DurationInSecond $sasExpiryDuration
 
 #Create the context for the storage account which will be used to copy snapshot to the storage account 
 $StorageAccount = New-AzStorageAccount -ResourceGroupName $resourceGroupName -Name $storageAccountName -SkuName Standard_LRS -Location $VM.Location
@@ -65,9 +53,6 @@ Revoke-AzDiskAccess -ResourceGroupName $resourceGroupName -DiskName $DiskName
 
 # Emtpy disk to get footer from
 $emptydiskforfootername = "$($VM.StorageProfile.OsDisk.Name)-empty.vhd"
-
-# Empty disk URI
-#$EmptyDiskURI = $container.CloudBlobContainer.Uri.AbsoluteUri + "/" + $emptydiskforfooter
 
 $diskConfig = New-AzDiskConfig `
     -Location $VM.Location `
@@ -139,6 +124,11 @@ $vhdUri = $osdisk.ICloudBlob.Uri.AbsoluteUri
 
 # Specify the disk options
 $diskConfig = New-AzDiskConfig -AccountType $accountType -Location $VM.location -DiskSizeGB $DiskSizeGB -SourceUri $vhdUri -CreateOption Import -StorageAccountId $StorageAccount.Id -HyperVGeneration $HyperVGen
+
+# Handle Trusted Launch VMs/Disks
+If($Disk.SecurityProfile.SecurityType -eq "TrustedLaunch"){
+    $diskconfig = Set-AzDiskSecurityProfile -Disk $diskconfig -SecurityType "TrustedLaunch"
+}
 
 #Create Managed disk
 $NewManagedDisk = New-AzDisk -DiskName $NewDiskName -Disk $diskConfig -ResourceGroupName $resourceGroupName
