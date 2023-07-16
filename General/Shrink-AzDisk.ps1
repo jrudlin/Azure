@@ -56,6 +56,7 @@ $emptydiskforfootername = "$($VM.StorageProfile.OsDisk.Name)-empty.vhd"
 
 $diskConfig = New-AzDiskConfig `
     -Location $VM.Location `
+    -Zone $VM.Zones `
     -CreateOption Empty `
     -DiskSizeGB $DiskSizeGB `
     -HyperVGeneration $HyperVGen
@@ -123,7 +124,7 @@ $accountType = $Disk.Sku.Name
 $vhdUri = $osdisk.ICloudBlob.Uri.AbsoluteUri
 
 # Specify the disk options
-$diskConfig = New-AzDiskConfig -AccountType $accountType -Location $VM.location -DiskSizeGB $DiskSizeGB -SourceUri $vhdUri -CreateOption Import -StorageAccountId $StorageAccount.Id -HyperVGeneration $HyperVGen
+$diskConfig = New-AzDiskConfig -AccountType $accountType -Location $VM.location -Zone $VM.Zones -DiskSizeGB $DiskSizeGB -SourceUri $vhdUri -CreateOption Import -StorageAccountId $StorageAccount.Id -HyperVGeneration $HyperVGen
 
 # Handle Trusted Launch VMs/Disks
 If($Disk.SecurityProfile.SecurityType -eq "TrustedLaunch"){
